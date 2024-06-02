@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>게임 소개 및 추천 페이지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dongle&family=East+Sea+Dokdo&family=Jua&family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #dce1ec;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+  }
+  body.dark-mode {
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    color: #fff;
+  }
+  header {
+    background-color: #ffffff;
+    color: #333;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+  }
+  header.dark-mode {
+    background-color: #222;
+  }
+  header img.logo {
+    height: 100px;
+    margin-left: 40px;
+    cursor: pointer;
+  }
+  .auth-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .auth-buttons button {
+    background: none;
+    border: none;
+    padding: 5px;
+    font-size: 12px;
+    color: #666;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  nav {
+    background-color: #f4f4f4;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+  nav.dark-mode {
+    background-color: #444;
+  }
+  nav a {
+    text-decoration: none;
+    font-family: "Jua", sans-serif;
+    font-size: 20px;
+    color: #333;
+    padding: 10px;
+    margin: 0 15px;
+    white-space: nowrap;
+  }
+  nav a:hover {
+    background-color: #ddd;
+  }
+  nav a.dark-mode {
+    color: #fff;
+  }
+
+  .slideshow-container {
+    max-width: 750px;
+    position: relative;
+    margin: auto;
+    flex: 1;
+    text-align: center;
+  }
+  .mySlides {
+    display: none;
+  }
+  .mySlides img {
+    width: 750px;
+    object-fit: contain;
+    border: 3px solid #333;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+  .dot-container {
+    text-align: center;
+    padding: 20px;
+  }
+  .dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+  }
+  #news{
+    margin-top: 70px;
+    font-family: "Jua";
+    font-size: 30px;
+  }
+  iframe{
+    margin-bottom: 50px;
+  }
+  .active {
+    background-color: #717171;
+  }
+  footer {
+    background-color: #dfdadaaf;
+    font-family: "Nanum Myeongjo", serif;
+    color: #666464;
+    text-align: right;
+    padding: 20px;
+    font-size: 12px;
+    width: 100%;
+  }
+  footer.dark-mode {
+    background-color: #444;
+    color: #ccc;
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 30px;
+  }
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 5px;
+  }
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .modal input, .modal textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+  }
+  .modal button {
+    width: 100%;
+    padding: 10px;
+    background-color: #0a4c79;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  .modal button:hover {
+    background-color: #0a4c79;
+  }
+  #darkModeToggle {
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+  }
+  .google-search-container, .news-search-container {
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .google-search-container {
+  display: flex;
+  align-items: center;
+}
+
+.google-search-container input {
+  padding: 10px;
+  font-size: 16px;
+  width: calc(70% - 10px);
+  max-width: 400px;
+  margin-right: 10px;
+}
+
+.google-search-container button {
+  padding: 10px 20px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+  iframe{
+    margin-left: 50px;
+  }
+
+  @media (max-width: 768px) {
+    header {
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    header img.logo {
+      height: 80px;
+      margin-bottom: 10px;
+      margin-left: 0;
+    }
+    .auth-buttons {
+      position: static;
+      margin-bottom: 20px;
+      flex-direction: row;
+      gap: 10px;
+    }
+    .auth-buttons button {
+      display: inline-block;
+    }
+    nav {
+      padding: 10px;
+    }
+    nav a {
+      display: inline-block;
+      width: calc(50% - 30px);
+      margin-bottom: 5px;
+      text-align: center;
+    }
+    .mySlides img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  
+</style>
+</head>
+<body>
+
+<header>
+  <img src="./img/LOGO.png" alt="Logo" class="logo">
+  <div class="auth-buttons">
+    <button id="loginBtn">로그인</button>
+    <button id="signupBtn">회원가입</button>
+    <button id="profileBtn">프로필 수정</button>
+    <button id="darkModeToggle">다크 모드</button>
+  </div>
+</header>
+
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="loginClose">&times;</span>
+    <h2>로그인</h2>
+    <input type="text" placeholder="아이디" id="loginId">
+    <input type="password" placeholder="비밀번호" id="loginPw">
+    <button id="loginSubmit">로그인</button>
+  </div>
+</div>
+
+<div id="signupModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="signupClose">&times;</span>
+    <h2>회원가입</h2>
+    <input type="text" id="signupName" placeholder="성명">
+    <input type="text" id="signupDOB" placeholder="생년월일">
+    <div style="display: flex; align-items: center;">
+      <label for="male" style="margin-right: 5px;">남성</label>
+      <input type="radio" id="male" name="gender" value="male">
+      <label for="female" style="margin-left: 10px; margin-right: 5px;">여성</label>
+      <input type="radio" id="female" name="gender" value="female">
+    </div>
+    <div style="display: flex; align-items: center;">
+      <input type="text" id="signupEmail" placeholder="이메일 주소" style="flex: 1; height: 30px;">
+      <span style="padding: 0 5px; height: 30px;">@</span>
+      <select id="emailDomain" style="flex: 1; height: 30px;">
+        <option value="naver.com">naver.com</option>
+        <option value="gmail.com">gmail.com</option>
+        <option value="hanmail.net">hanmail.net</option>
+        <option value="gachon.ac.kr">gachon.ac.kr</option>
+        <option value="custom">직접 입력</option>
+      </select>
+    </div>
+    <input type="text" placeholder="아이디" id="loginId">
+    <input type="password" placeholder="비밀번호" id="loginPw">
+    <input type="password" placeholder="비밀번호 확인" id="loginPw">
+    <button id="signupSubmit">가입하기</button>
+  </div>
+</div>
+
+
+<div id="profileModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="profileClose">&times;</span>
+    <h2>프로필 수정</h2>
+    <input type="text" placeholder="닉네임" id="profileNickname">
+    <input type="text" placeholder="좋아하는 게임" id="profileFavoriteGame">
+    <input type="file" id="profileImage">
+    <textarea placeholder="프로필 메시지" id="profileMessage"></textarea>
+    <button id="profileSubmit">수정하기</button>
+  </div>
+</div>
+
+<nav>
+  <a href="game1.html">마인크래프트</a>
+  <a href="game2.html">FC온라인4</a>
+  <a href="game3.html">스위치 명작 7선</a>
+</nav>
+
+<div class="google-search-container">
+  <input type="text" id="googleSearchInput" placeholder="게임을 검색해보세요!">
+  <button onclick="googleSearch()">검색</button>
+</div>
+<div id="gameInputContainer">
+  <input type="text" id="gameInput" placeholder="추천받고 싶은 게임을 입력하세요" style="width: 250px; padding: 8px;">
+  <button onclick="recommendGame()" style="padding: 8px;">보내기</button>
+</div>
+
+<div id="gameRecommendation"></div>
+
+<div id="gameRecommendation"></div>
+
+<br><br>
+<div class="audio-container">
+  <audio id="bgm" loop>
+    <source src="./img/SWann P - Intro.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<div class="slideshow-container">
+  <div class="mySlides">
+    <img src="./img/GAME.png" alt="Game 1">
+  </div>
+  <div class="mySlides">
+    <img src="./img/MINECRAFT.webp" alt="Game 2">
+  </div>
+  <div class="mySlides">
+    <img src="./img/FIFA.png" alt="Game 3">
+  </div>
+  <div class="mySlides">
+    <img src="./img/BOTW.webp" alt="Game 4">
+  </div>
+  <div class="mySlides">
+    <img src="./img/TOTK.webp" alt="Game 5">
+  </div>
+  <div class="mySlides">
+    <img src="./img/KART.webp" alt="Game 6">
+  </div>
+  <div class="mySlides">
+    <img src="./img/ODYSSEY.webp" alt="Game 7">
+  </div>
+  <div class="mySlides">
+    <img src="./img/WONDER.jpg" alt="Game 8">
+  </div>
+  <div class="mySlides">
+    <img src="./img/KIRBY.webp" alt="Game 9">
+  </div>
+  <div class="mySlides">
+    <img src="./img/PIKMIN4.webp" alt="Game 10">
+  </div>
+</div>
+
+<div class="dot-container">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
+  <span class="dot" onclick="currentSlide(4)"></span>
+  <span class="dot" onclick="currentSlide(5)"></span>
+  <span class="dot" onclick="currentSlide(6)"></span>
+  <span class="dot" onclick="currentSlide(7)"></span>
+  <span class="dot" onclick="currentSlide(8)"></span>
+  <span class="dot" onclick="currentSlide(9)"></span>
+  <span class="dot" onclick="currentSlide(10)"></span>
+</div>
+
+<h2 id="news">닌텐도의 최신 소식을 알아보세요!</h2>
+<iframe src="https://www.nintendo.co.kr/news" width="80%" height="400px" frameborder="0" scrolling="Yes"></iframe>
+
+<footer>
+  가천대학교 2024-1 AI 프로그래밍 입문(웹)<br><br>
+    21조 <br>
+    마인크래프트 페이지 - 202434742 김주찬 <br>
+    FC온라인4 페이지 - 202434792 오명열 <br>
+    메인 페이지, 스위치 명작 7선 페이지 - 202434837 정현진 <br>
+    Special Thanks to ChatGPT<br><br>
+    BGM: SWann P - Intro
+</footer>
+
+<script>
+  function recommendGame() {
+    document.getElementById("gameInput").value = "";
+    alert("소중한 의견 감사합니다. 다음 게임 추천 페이지를 기대해주세요!");
+}
+  var currentSlideIndex = 1;
+  showSlides(currentSlideIndex);
+
+  function plusSlides(n) {
+    showSlides(currentSlideIndex += n);
+  }
+
+  function currentSlide(n) {
+    showSlides(currentSlideIndex = n);
+  }
+
+  function showSlides(n) {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    if (n > slides.length) { currentSlideIndex = 1 }
+    if (n < 1) { currentSlideIndex = slides.length }
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[currentSlideIndex - 1].style.display = "block";
+    dots[currentSlideIndex - 1].className += " active";
+  }
+
+  var loginModal = document.getElementById("loginModal");
+  var signupModal = document.getElementById("signupModal");
+  var profileModal = document.getElementById("profileModal");
+
+  var loginBtn = document.getElementById("loginBtn");
+  var signupBtn = document.getElementById("signupBtn");
+  var profileBtn = document.getElementById("profileBtn");
+
+  var loginClose = document.getElementById("loginClose");
+  var signupClose = document.getElementById("signupClose");
+  var profileClose = document.getElementById("profileClose");
+
+  loginBtn.onclick = function () {
+    loginModal.style.display = "block";
+  }
+
+  signupBtn.onclick = function () {
+    signupModal.style.display = "block";
+  }
+
+  profileBtn.onclick = function () {
+    profileModal.style.display = "block";
+  }
+
+  loginClose.onclick = function () {
+    loginModal.style.display = "none";
+  }
+
+  signupClose.onclick = function () {
+    signupModal.style.display = "none";
+  }
+
+  profileClose.onclick = function () {
+    profileModal.style.display = "none";
+  }
+
+  window.onclick = function (event) {
+    if (event.target == loginModal) {
+      loginModal.style.display = "none";
+    }
+    if (event.target == signupModal) {
+      signupModal.style.display = "none";
+    }
+    if (event.target == profileModal) {
+      profileModal.style.display = "none";
+    }
+  }
+
+  document.getElementById("loginSubmit").onclick = function() {
+    alert("로그인 성공!");
+    loginModal.style.display = "none";
+  };
+
+  document.getElementById("signupSubmit").onclick = function() {
+    alert("회원가입 성공!");
+    signupModal.style.display = "none";
+  };
+
+  document.getElementById("profileSubmit").onclick = function() {
+    alert("프로필 수정 성공!");
+    profileModal.style.display = "none";
+  };
+
+  var darkModeToggle = document.getElementById("darkModeToggle");
+  darkModeToggle.onclick = function () {
+    document.body.classList.toggle("dark-mode");
+    document.querySelector("header").classList.toggle("dark-mode");
+    document.querySelector("nav").classList.toggle("dark-mode");
+    document.querySelector("footer").classList.toggle("dark-mode");
+
+    var navLinks = document.querySelectorAll("nav a");
+    for (var i = 0; i < navLinks.length; i++) {
+      navLinks[i].classList.toggle("dark-mode");
+    }
+  }
+
+  function googleSearch() {
+    var query = document.getElementById('googleSearchInput').value;
+    var url = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+    window.open(url, '_blank');
+
+  }
+</script>
+
+</body>
+</html>
